@@ -12,7 +12,7 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/home",
     element: <HomePage />,
   },
   {

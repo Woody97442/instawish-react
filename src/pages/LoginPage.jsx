@@ -1,25 +1,53 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Navigate } from "react-router-dom";
 import { login } from "../features/authSlice";
-
 function LoginPage() {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("woody97442@hotmail.fr");
+  const [username, setUsername] = useState("woody97442");
   const [password, setPassword] = useState("Woody97442");
-
-  const handleSubmit = (e) => {
+  const jwt = useSelector((state) => state.auth.jwt);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Ici, vous pouvez implémenter la logique de validation des identifiants
-    // Par exemple, vous pouvez envoyer les données à un serveur ou les vérifier localement
-    if (username === "utilisateur" && password === "motdepasse") {
-      console.log("Connexion reussie");
-      // dispatch(login({ username }));
+
+    let headersList = {
+      "Accept": "*/*",
+      "Content-Type": "application/json",
+    };
+
+    let bodyContent = {
+      "username": username,
+      "password": password,
+    };
+
+    try {
+      let response = await fetch(
+        "https://symfony-instawish.formaterz.fr/api/login_check",
+        {
+          method: "POST",
+          body: JSON.stringify(bodyContent),
+          headers: headersList,
+        }
+      );
+      let data = await response.json();
+
+      // Sauvegarde du token
+      localStorage.setItem("token", data.token);
+      dispatch(login(data.token));
+    } catch (error) {
+      console.error("Erreur lors de la requête :", error);
     }
   };
 
   return (
     <div className="container bg-login flex flex-col justify-center items-center">
+      {/* Redirection ver la page home */}
+      {jwt && (
+        <Navigate
+          to="/home"
+          replace={true}
+        />
+      )}
       <div className="login-form-container">
         <form
           onSubmit={handleSubmit}
@@ -28,9 +56,9 @@ function LoginPage() {
           <div className="flex flex-col gap-3">
             <input
               type="text"
-              placeholder="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <input
               type="password"
