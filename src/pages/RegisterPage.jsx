@@ -6,10 +6,11 @@ function RegisterPage() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("woody97442@hotmail.fr");
   const [username, setUsername] = useState("woody97442");
-  const [profilePicture, setProfilePicture] = useState("");
-  const [password, setPassword] = useState("009864Brian@");
-  const [confirmPassword, setConfirmPassword] = useState("009864Brian@");
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [password, setPassword] = useState("Woody97442");
+  const [confirmPassword, setConfirmPassword] = useState("Woody97442");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const validatePassword = (password) => {
     const hasLowerCase = /[a-z]/.test(password);
@@ -20,18 +21,8 @@ function RegisterPage() {
     return hasLowerCase && hasUpperCase && hasNumber && isLengthValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("username", username);
-    formData.append("profilePicture", profilePicture);
-
-    // for (const entry of formData.entries()) {
-    //   console.log(entry[0], entry[1]);
-    // }
 
     // Vérification des champs
     if (!username || !password || !confirmPassword || !email) {
@@ -51,20 +42,38 @@ function RegisterPage() {
       return;
     }
 
-    // Exemple d'envoi des données à une API en utilisant FormData
-    fetch("https://symfony-instawish.formaterz.fr/api/register", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Gérer la réponse de l'API
-        console.log(data);
-      })
-      .catch((error) => {
-        // Gérer les erreurs de requête
-        console.error("Erreur lors de l'envoi des données:", error);
-      });
+    let headersList = {
+      "Accept": "*/*",
+    };
+
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("username", username);
+    if (profilePicture) {
+      formData.append("profilePicture", profilePicture);
+    }
+
+    // Utilisation de fetch pour envoyer les données
+    try {
+      const response = await fetch(
+        "https://symfony-instawish.formaterz.fr/api/register",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await response.text();
+      setError(data.status);
+    } catch (error) {
+      console.error("Erreur lors de l'envoi des données:", error);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePicture(file);
   };
 
   return (
@@ -103,8 +112,7 @@ function RegisterPage() {
             <input
               type="file"
               placeholder="profilePicture"
-              value={profilePicture}
-              onChange={(e) => setProfilePicture(e.target.value)}
+              onChange={handleFileChange}
             />
           </div>
           <button
@@ -113,6 +121,7 @@ function RegisterPage() {
             Sign up
           </button>
           {error && <p style={{ color: "red" }}>{error}</p>}
+          {success && <p style={{ color: "green" }}>{success}</p>}
         </form>
         <div className="login-form bg-white">
           <p className="text-center text-sm">

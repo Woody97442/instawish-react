@@ -5,8 +5,8 @@ import { login } from "../features/authSlice";
 
 function LoginPage() {
   const dispatch = useDispatch();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("woody97442@hotmail.fr");
+  const [password, setPassword] = useState("Woody97442");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,9 +28,9 @@ function LoginPage() {
           <div className="flex flex-col gap-3">
             <input
               type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="password"
