@@ -6,9 +6,15 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 
+import { fetchUser } from "./features/userSlice.js";
+import { fetchAllUsersSlice } from "./features/allUsersSlice.js";
+
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
+
+store.dispatch(fetchUser());
+store.dispatch(fetchAllUsersSlice());
 
 const router = createBrowserRouter([
   {

@@ -4,11 +4,13 @@ import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import { ImExit } from "react-icons/im";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/authSlice";
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 function NavBar() {
   const dispatch = useDispatch();
   const jwt = useSelector((state) => state.auth.jwt);
+  const user = useSelector((state) => state.user);
+  const baseUrlImage = "https://symfony-instawish.formaterz.fr/";
 
   const handleLogout = () => {
     dispatch(logout());
@@ -22,7 +24,7 @@ function NavBar() {
           replace={true}
         />
       )}
-      <div className="flex flex-row w-full items-center justify-between px-4">
+      <div className="flex flex-row w-full items-center justify-between px-4 pt-2">
         <FontAwesomeIcon
           icon={faSquarePlus}
           size="2xl"
@@ -30,13 +32,13 @@ function NavBar() {
         <h1 className="brandtext">InstaWish</h1>
         <div className="flex flex-row items-center">
           <ImExit
-            className="circle-dot cursor-pointer"
+            className="circle-dot cursor-pointer mx-4"
             onClick={handleLogout}
           />
           <img
-            src="/avatar.jpg"
+            src={baseUrlImage + user.imageProfil}
             alt="Logo"
-            className="w-16 h-16 rounded-full avatar"
+            className="w-14 h-14 rounded-full avatar"
           />
         </div>
       </div>
