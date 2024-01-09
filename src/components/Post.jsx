@@ -28,19 +28,23 @@ function Post() {
           className="post-img"
         />
       </div>
+      <div className="flex flex-row w-full items-center justify-between mt-3 desc-post">
+        <span>Description de la photo</span>
+        <span className="enable-comment">Voir les 2 commentaires</span>
+      </div>
       <div className="flex flex-row w-full items-center justify-between mt-5">
         <div className="flex flex-row items-center icon-left-block">
-          <FiMessageCircle className="icon-post" />
+          <div className="message-icon">
+            <FiMessageCircle className="icon-post" />
+            <p className="message-count">2</p>
+          </div>
           <div className="like-icon">
             <MdFavoriteBorder className="icon-post" />
+            <p className="like-count">18</p>
           </div>
           <BsSend className="icon-post" />
         </div>
         <CiBookmark className="icon-post" />
-      </div>
-      <div className="flex flex-row w-full items-center justify-between mt-3">
-        <p>31 Likes</p>
-        <p>15 minutes ago</p>
       </div>
     </div>
   );
