@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import countriesReducer from "../features/CountriesSlice";
+import authSliceReducer from "../features/authSlice";
 
 export const store = configureStore({
   reducer: {
-    country: countriesReducer,
+    auth: authSliceReducer,
   },
 });
