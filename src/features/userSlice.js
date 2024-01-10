@@ -47,6 +47,9 @@ export const fetchMyFollows = createAsyncThunk(
         }
       );
       let data = await response.json();
+      if (response.status === 401) {
+        localStorage.removeItem("token");
+      }
       return data;
     } catch (error) {
       console.error("Erreur lors de la requête :", error);

@@ -123,6 +123,10 @@ body {
   right: -13px;
 }
 
+.liked {
+  color: red;
+}
+
 .message-icon {
   position: relative;
 }

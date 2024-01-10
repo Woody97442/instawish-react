@@ -1,13 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoEllipsisVerticalOutline } from "react-icons/io5";
 import { FiMessageCircle } from "react-icons/fi";
 import { MdFavoriteBorder } from "react-icons/md";
 import { BsSend } from "react-icons/bs";
 import { CiBookmark } from "react-icons/ci";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMyFollows } from "../features/userSlice";
 
 function Post({ post }) {
-  const { imageUrl, likeds, comments, createdBy, description } = post;
+  const dispatch = useDispatch();
+  const { id, imageUrl, likeds, comments, createdBy, description } = post;
   const baseUrlImage = "https://symfony-instawish.formaterz.fr/";
+  const user = useSelector((state) => state.user);
+  const [liked, setLiked] = useState(
+    likeds.some((like) => like.user.id === user.id)
+  );
+
+  const handleComment = () => {
+    console.log("Comment");
+  };
+
+  const handleLike = async () => {
+    setLiked(!liked);
+
+    let headersList = {
+      "Accept": "*/*",
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+    };
+
+    let response = await fetch(
+      `https://symfony-instawish.formaterz.fr/api/liked/${id}`,
+      {
+        method: "POST",
+        headers: headersList,
+      }
+    );
+    dispatch(fetchMyFollows());
+  };
 
   return (
     <div className="user-post">
@@ -43,8 +72,14 @@ function Post({ post }) {
             <FiMessageCircle className="icon-post" />
             <p className="message-count">{comments.length}</p>
           </div>
-          <div className="like-icon">
-            <MdFavoriteBorder className="icon-post" />
+          <div
+            className={`like-icon `}
+            onClick={handleLike}>
+            {liked ? (
+              <MdFavoriteBorder className="icon-post cursor-pointer hover:scale-105 ease-in-out duration-300 liked" />
+            ) : (
+              <MdFavoriteBorder className="icon-post cursor-pointer hover:scale-105 ease-in-out duration-300" />
+            )}
             <p className="like-count">{likeds.length}</p>
           </div>
           <BsSend className="icon-post" />

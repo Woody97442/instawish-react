@@ -6,10 +6,17 @@ import UserAvatarList from "../components/UserAvatarList";
 import Post from "../components/Post";
 import AddPost from "../components/AddPost";
 
+import { store } from "../app/store";
+import { fetchUser, fetchMyFollows } from "../features/userSlice";
+import { fetchAllUsersSlice } from "../features/allUsersSlice";
+
+store.dispatch(fetchUser());
+store.dispatch(fetchMyFollows());
+store.dispatch(fetchAllUsersSlice());
+
 function HomePage() {
   const myFollow = useSelector((state) => state.user.myFollows);
 
-  console.log(myFollow);
   return (
     <div className="flex flex-col items-center justify-center">
       <NavBar />
