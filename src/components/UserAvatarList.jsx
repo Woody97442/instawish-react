@@ -9,7 +9,6 @@ function UserAvatarList({ user }) {
   const { id, email, imageUrl, username } = user;
   const myFollow = useSelector((state) => state.user.myFollows);
   const [isFollow, setIsFollow] = useState();
-
   useEffect(() => {
     setIsFollow(myFollow.some((follower) => follower.createdBy.id === user.id));
   }, [isFollow, myFollow]);
