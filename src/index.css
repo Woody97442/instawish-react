@@ -206,3 +206,14 @@ body {
 .enable-text {
   font-size: .9rem;
 }
+
+.follow-icon {
+  color: #61b5f8;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 35px;
+  left: 10px;
+  height: 20px;
+  width: 20px;
+}

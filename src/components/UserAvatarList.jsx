@@ -1,9 +1,18 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchMyFollows } from "../features/userSlice";
+import { FaCheckCircle } from "react-icons/fa";
 
-function UserAvatarList() {
-  const users = useSelector((state) => state.users.allUser);
+function UserAvatarList({ user }) {
   const baseUrlImage = "https://symfony-instawish.formaterz.fr/";
+  const dispatch = useDispatch();
+  const { id, email, imageUrl, username } = user;
+  const myFollow = useSelector((state) => state.user.myFollows);
+  const [isFollow, setIsFollow] = useState();
+
+  useEffect(() => {
+    setIsFollow(myFollow.some((follower) => follower.createdBy.id === user.id));
+  }, [isFollow, myFollow]);
 
   const handleFollowUser = async (idUser) => {
     let headersList = {
@@ -29,34 +38,28 @@ function UserAvatarList() {
       );
       let data = await response.json();
       console.log(data);
+      dispatch(fetchMyFollows());
       return;
     } else {
       console.log(data);
+      dispatch(fetchMyFollows());
     }
   };
 
   return (
-    <div className="relative flex items-center">
-      <div
-        id="sliderUser"
-        className="w-full h-[7rem] overflow-x-scroll  scroll whitespace-nowrap scroll-smooth scrollbar-hide">
-        {users.map((user, index) => (
-          <span
-            key={index}
-            className="relative "
-            onClick={() => handleFollowUser(user.id)}>
-            <img
-              src={baseUrlImage + user.imageUrl}
-              alt="Logo"
-              className="user-element inline-block cursor-pointer hover:scale-105 ease-in-out duration-300 rounded-full"
-            />
-            <span className="absolute bottom-[-3.5rem] left-[2rem] font-semibold">
-              {user.username}
-            </span>
-          </span>
-        ))}
-      </div>
-    </div>
+    <span
+      className="relative "
+      onClick={() => handleFollowUser(id)}>
+      <img
+        src={baseUrlImage + imageUrl}
+        alt="Logo"
+        className="user-element inline-block cursor-pointer hover:scale-105 ease-in-out duration-300 rounded-full"
+      />
+      {isFollow === true ? <FaCheckCircle className="follow-icon" /> : null}
+      <span className="absolute bottom-[-3.5rem] left-[2rem] font-semibold">
+        {username}
+      </span>
+    </span>
   );
 }
 
