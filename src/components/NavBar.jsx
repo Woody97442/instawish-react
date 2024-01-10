@@ -16,6 +16,12 @@ function NavBar() {
     dispatch(logout());
   };
 
+  const handleAddPost = () => {
+    const addPost = document.getElementById("addPost");
+    addPost.classList.toggle("hidden");
+    console.log("test");
+  };
+
   return (
     <header className="w-full flex flex-row">
       {jwt === null && (
@@ -26,8 +32,10 @@ function NavBar() {
       )}
       <div className="flex flex-row w-full items-center justify-between px-4 pt-2">
         <FontAwesomeIcon
+          onClick={handleAddPost}
           icon={faSquarePlus}
           size="2xl"
+          className="cursor-pointer hover:scale-105 ease-in-out duration-300"
         />
         <h1 className="brandtext">InstaWish</h1>
         <div className="flex flex-row items-center">

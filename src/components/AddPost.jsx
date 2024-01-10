@@ -35,7 +35,9 @@ function AddPost() {
     }
   };
   return (
-    <div className="login-form-container w-full">
+    <div
+      className="login-form-container w-full hidden"
+      id="addPost">
       <form
         onSubmit={handleSubmit}
         className="login-form bg-white">

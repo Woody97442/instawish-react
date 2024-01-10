@@ -5,6 +5,7 @@ const initialState = {
   username: "",
   email: "",
   imageProfil: "",
+  myPosts: [],
   myFollows: [],
 };
 
@@ -22,8 +23,18 @@ export const fetchUser = createAsyncThunk("fetchInitialUser", async () => {
         headers: headersList,
       }
     );
-    let data = await response.json();
-    return data;
+    let dataUser = await response.json();
+    if (response.status === 200) {
+      let response = await fetch(
+        "https://symfony-instawish.formaterz.fr/api/home/" + dataUser.id,
+        {
+          method: "GET",
+          headers: headersList,
+        }
+      );
+      let data = await response.json();
+      return { post: data, user: dataUser };
+    }
   } catch (error) {
     localStorage.removeItem("token");
     console.error("Erreur lors de la requête :", error);
@@ -63,10 +74,11 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchUser.fulfilled, (state, { payload }) => {
-      state.id = payload.id;
-      state.username = payload.username;
-      state.email = payload.email;
-      state.imageProfil = payload.imageUrl;
+      state.id = payload.user.id;
+      state.username = payload.user.username;
+      state.email = payload.user.email;
+      state.imageProfil = payload.user.imageUrl;
+      state.myPosts = payload.post;
     });
     builder.addCase(fetchMyFollows.fulfilled, (state, { payload }) => {
       state.myFollows = payload;
