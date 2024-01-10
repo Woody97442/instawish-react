@@ -19,7 +19,6 @@ function NavBar() {
   const handleAddPost = () => {
     const addPost = document.getElementById("addPost");
     addPost.classList.toggle("hidden");
-    console.log("test");
   };
 
   return (

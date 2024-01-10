@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { fetchUser } from "../features/userSlice";
 
 function AddPost() {
+  const dispatch = useDispatch();
   const [description, setDescription] = useState("");
   const [picture, setPicture] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     let headersList = {
       "Accept": "*/*",
-      "Content-Type": "application/json",
       "Authorization": "Bearer " + localStorage.getItem("token"),
     };
 
@@ -29,11 +32,18 @@ function AddPost() {
         }
       );
       let data = await response.json();
-      console.log(data);
+      dispatch(fetchUser());
     } catch (error) {
       console.error("Erreur lors de la requête :", error);
     }
   };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setPicture(file);
+    setPreviewImage(URL.createObjectURL(file)); // Création de l'URL de l'aperçu de l'image
+  };
+
   return (
     <div
       className="login-form-container w-full hidden"
@@ -50,8 +60,18 @@ function AddPost() {
           />
           <input
             type="file"
-            onChange={(e) => setPicture(e.target.value)}
+            onChange={handleFileChange}
           />
+        </div>
+        <div>
+          {/* Affichage de l'aperçu de l'image */}
+          {previewImage && (
+            <img
+              src={previewImage}
+              alt="Preview"
+              style={{ maxWidth: "100%" }}
+            />
+          )}
         </div>
         <button
           type="submit"
