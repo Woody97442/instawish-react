@@ -221,3 +221,7 @@ body {
 .hidden {
   display: none;
 }
+
+.message-send {
+  color: #61b5f8;
+}
