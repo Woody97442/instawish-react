@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 function RegisterPage() {
-  const dispatch = useDispatch();
   const [email, setEmail] = useState("woody97442@hotmail.fr");
   const [username, setUsername] = useState("woody97442");
   const [profilePicture, setProfilePicture] = useState(null);
@@ -61,6 +59,7 @@ function RegisterPage() {
         {
           method: "POST",
           body: formData,
+          headers: headersList,
         }
       );
 

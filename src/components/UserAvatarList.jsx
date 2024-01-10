@@ -1,11 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 function UserAvatarList() {
   const users = useSelector((state) => state.users.allUser);
   const baseUrlImage = "https://symfony-instawish.formaterz.fr/";
 
-  console.log(users);
+  const handleFollowUser = async (idUser) => {
+    let headersList = {
+      "Accept": "*/*",
+      "Authorization": "Bearer " + localStorage.getItem("token"),
+    };
+
+    let response = await fetch(
+      "https://symfony-instawish.formaterz.fr/api/follow/add/" + idUser,
+      {
+        method: "POST",
+        headers: headersList,
+      }
+    );
+    let data = await response.json();
+    if (data.status === "error") {
+      let response = await fetch(
+        "https://symfony-instawish.formaterz.fr/api/follow/remove/" + idUser,
+        {
+          method: "POST",
+          headers: headersList,
+        }
+      );
+      let data = await response.json();
+      console.log(data);
+      return;
+    } else {
+      console.log(data);
+    }
+  };
 
   return (
     <div className="relative flex items-center">
@@ -15,7 +43,8 @@ function UserAvatarList() {
         {users.map((user, index) => (
           <span
             key={index}
-            className="relative ">
+            className="relative "
+            onClick={() => handleFollowUser(user.id)}>
             <img
               src={baseUrlImage + user.imageUrl}
               alt="Logo"

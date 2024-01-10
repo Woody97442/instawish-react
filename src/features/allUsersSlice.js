@@ -21,8 +21,10 @@ export const fetchAllUsersSlice = createAsyncThunk(
         }
       );
       let data = await response.json();
-      return data;
+      const users = Object.entries(data).map((key) => key[1]);
+      return users;
     } catch (error) {
+      localStorage.removeItem("token");
       console.error("Erreur lors de la requête :", error);
     }
   }

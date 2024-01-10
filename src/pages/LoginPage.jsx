@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
-import { login } from "../features/authSlice";
+import { login, logout } from "../features/authSlice";
 function LoginPage() {
   const dispatch = useDispatch();
   const [username, setUsername] = useState("woody97442");
@@ -35,6 +35,7 @@ function LoginPage() {
       localStorage.setItem("token", data.token);
       dispatch(login(data.token));
     } catch (error) {
+      dispatch(logout());
       console.error("Erreur lors de la requête :", error);
     }
   };
@@ -44,7 +45,7 @@ function LoginPage() {
       {/* Redirection ver la page home */}
       {jwt && (
         <Navigate
-          to="/home"
+          to="/"
           replace={true}
         />
       )}

@@ -5,42 +5,47 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { BsSend } from "react-icons/bs";
 import { CiBookmark } from "react-icons/ci";
 
-function Post() {
+function Post({ post }) {
+  const { imageUrl, likeds, comments, createdBy, description } = post;
+  const baseUrlImage = "https://symfony-instawish.formaterz.fr/";
+
   return (
     <div className="user-post">
       <div className="flex flex-row w-full items-center justify-between">
         <div className="flex flex-row w-full items-center relative">
           <img
-            src="/giga.jpg"
+            src={baseUrlImage + createdBy.imageUrl}
             alt="Logo"
             className="w-16 h-16 rounded-full user-avatar"
           />
           <div className="user-post-author">
-            <span>Woody97442</span>
+            <span>{createdBy.username}</span>
           </div>
         </div>
         <IoEllipsisVerticalOutline className="circle-dot" />
       </div>
       <div className="post">
         <img
-          src="/post.jpg"
+          src={baseUrlImage + imageUrl}
           alt="paysage"
           className="post-img"
         />
       </div>
       <div className="flex flex-row w-full items-center justify-between mt-3 desc-post">
-        <span>Description de la photo</span>
-        <span className="enable-comment">Voir les 2 commentaires</span>
+        <span>{description}</span>
+        <span className="enable-comment">
+          Voir les {comments.length} commentaires
+        </span>
       </div>
       <div className="flex flex-row w-full items-center justify-between mt-5">
         <div className="flex flex-row items-center icon-left-block">
           <div className="message-icon">
             <FiMessageCircle className="icon-post" />
-            <p className="message-count">2</p>
+            <p className="message-count">{comments.length}</p>
           </div>
           <div className="like-icon">
             <MdFavoriteBorder className="icon-post" />
-            <p className="like-count">18</p>
+            <p className="like-count">{likeds.length}</p>
           </div>
           <BsSend className="icon-post" />
         </div>
